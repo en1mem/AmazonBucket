@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Boot Exemple</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <h2>Product Details</h2>
+        <div>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">element Id:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${element.id}">element Id</p></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">entityId:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${element.entityId}">entityId</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">isActual:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${element.isActual}">isActual</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">status:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${element.status}">status</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">lastUpdateDateTime:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${element.lastUpdateDateTime}">lastUpdateDateTime</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">businessField:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${element.businessField}">businessField</p>
+                    </div>
+                </div>
+            </form>
+    </div>
+</div>
+
+</body>
+</html>
+
+

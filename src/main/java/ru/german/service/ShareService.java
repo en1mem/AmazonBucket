@@ -41,7 +41,7 @@ public class ShareService {
 
     public ResponseEntity<String> getActualContent(Long entityId) {
         Long id = elementRepository.getActualIdByEntity(entityId);
-        InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + id);
+        InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + id + ".txt");
 
         String result = null;
         try {
@@ -87,7 +87,7 @@ public class ShareService {
 
     public ResponseEntity<String> updateActualContentByElementEntity(String content, Long entityId) {
         Long id = elementRepository.getActualIdByEntity(entityId);
-        elementRepository.uploadFile( defaultAmazonPath + id, content);
+        elementRepository.uploadFile( defaultAmazonPath + id + ".txt", content);
         return ResponseEntity.ok(content);
     }
 
@@ -103,7 +103,7 @@ public class ShareService {
         elementObject.setEntityId(seqId);
         elementRepository.insert(content.getElementObject());
 
-        elementRepository.uploadFile(defaultAmazonPath + seqId, content.getContent());
+        elementRepository.uploadFile(defaultAmazonPath + seqId + ".txt", content.getContent());
         return ResponseEntity.ok(content);
     }
 
@@ -115,7 +115,7 @@ public class ShareService {
             try {
                 ElementPojo elementPojo = new ElementPojo();
 
-                InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + element.getId());
+                InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + element.getId() + ".txt");
                 String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
                 elementPojo.setContent(content);
                 elementPojo.setElementObject(element);
@@ -132,5 +132,16 @@ public class ShareService {
         } else {
             return ResponseEntity.ok(result);
         }
+    }
+
+    public ResponseEntity<String> testConnect(Long entityId) throws IOException {
+        InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + entityId + ".txt");
+        String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+        if (content != null) {
+            return ResponseEntity.ok(content);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 }

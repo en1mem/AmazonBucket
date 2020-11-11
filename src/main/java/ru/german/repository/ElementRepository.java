@@ -5,9 +5,9 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.cloud.Sequences;
-import com.cloud.tables.daos.ElementObjectDao;
-import com.cloud.tables.pojos.ElementObject;
+import ru.generated.com.cloud.Sequences;
+import ru.generated.com.cloud.tables.daos.ElementObjectDao;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cloud.tables.ElementObject.ELEMENT_OBJECT;
+import static ru.generated.com.cloud.tables.ElementObject.ELEMENT_OBJECT;
 
 @Repository
 public class ElementRepository extends ElementObjectDao {

@@ -1,6 +1,6 @@
 package ru.german.controller;
 
-import com.cloud.tables.pojos.ElementObject;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;

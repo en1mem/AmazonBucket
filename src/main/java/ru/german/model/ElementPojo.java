@@ -1,6 +1,6 @@
 package ru.german.model;
 
-import com.cloud.tables.pojos.ElementObject;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 import lombok.Getter;
 import lombok.Setter;
 

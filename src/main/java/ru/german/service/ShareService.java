@@ -1,6 +1,6 @@
 package ru.german.service;
 
-import com.cloud.tables.pojos.ElementObject;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

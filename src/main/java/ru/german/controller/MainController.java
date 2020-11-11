@@ -1,6 +1,6 @@
 package ru.german.controller;
 
-import com.cloud.tables.pojos.ElementObject;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.german.model.ElementPojo;
 import ru.german.service.ShareService;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -35,13 +36,13 @@ public class MainController {
     }
 
     @Transactional
-    @RequestMapping(value = "/update/actual/{entityId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/create/actual/{entityId}", method = RequestMethod.PUT)
     public ResponseEntity<ElementObject> createElementObject(@RequestBody ElementObject content) {
         return service.createElementObject(content);
     }
 
     @Transactional
-    @RequestMapping(value = "/update/actual/{entityId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/create/actual/content/{entityId}", method = RequestMethod.PUT)
     public ResponseEntity<ElementPojo> createElementObjectWithContent(@RequestBody ElementPojo content) {
         return service.createElementObjectWithContent(content);
     }
@@ -56,5 +57,10 @@ public class MainController {
     @RequestMapping(value = "/update/actual/content/{entityId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateContentToActualElementEntity(@RequestBody String content, @PathVariable Long entityId) {
         return service.updateActualContentByElementEntity(content, entityId);
+    }
+
+    @RequestMapping(value = "/get/connect/{entityId}", method = GET)
+    public ResponseEntity<String> testConnectToBucket(@PathVariable Long entityId) throws IOException {
+        return service.testConnect(entityId);
     }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Boot Exemple</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <div th:if="${not #lists.isEmpty(elements)}">
+        <h2>Product List</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>EntityId</th>
+                <th>isActual</th>
+                <th>status</th>
+                <th>lastUpdateDateTime</th>
+                <th>businessField</th>
+                <th>View</th>
+                <th>Edit</th>
+                <!--<th>Delete</th>-->
+            </tr>
+            <tr th:each="element : ${elements}">
+                <td th:text="${element.id}"><a href="/product/${product.id}">Id</a></td>
+                <td th:text="${element.entityId}">EntityId</td>
+                <td th:text="${element.isActual}">isActual</td>
+                <td th:text="${element.status}">status</td>
+                <td th:text="${element.lastUpdateDateTime}">lastUpdateDateTime</td>
+                <td th:text="${element.businessField}">businessField</td>
+                <td><a th:href="${ '/get/actual/' + element.id}">View</a></td>
+                <td><a th:href="${'/update/actual/' + element.id}">Edit</a></td>
+                <!--<td><a th:href="${'/product/delete/' + product.id}">Delete</a></td>-->
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -17,10 +17,13 @@ public class AmazonConfig {
     String bucketName;
 
     @Value("${accessKeyID}")
-    static String accessKey;
+    String accessKey;
 
     @Value("${secretAccessKey}")
-    static String secretKey;
+    String secretKey;
+
+    @Value("${region}")
+    String region;
 
     @Bean
     public AmazonS3 getBucket() {
@@ -29,6 +32,7 @@ public class AmazonConfig {
         return AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
                 .build();
     }
 }

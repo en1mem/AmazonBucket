@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.generated.com.cloud.tables.pojos.ElementObject;
 import ru.generated.com.cloud.tables.records.ElementObjectRecord;
 import ru.german.model.ElementPojo;
@@ -61,6 +62,7 @@ public class ShareService {
         }
     }
 
+    @Transactional
     public ResponseEntity<ElementObject> updateActualElement(ElementObject content, Long entityId) {
         ElementObjectRecord currentElement = elementRepository.getActualElementObjectRecordByEntity(entityId);
         fillNewFieldsToElement(content, currentElement);
@@ -99,6 +101,7 @@ public class ShareService {
         return ResponseEntity.ok(content);
     }
 
+    @Transactional
     public ResponseEntity<ElementObject> createElementObject(ElementObject content) {
         elementRepository.insertElement(generateElement(content));
 
@@ -106,6 +109,7 @@ public class ShareService {
         return ResponseEntity.ok(content);
     }
 
+    @Transactional
     public ResponseEntity<ElementPojo> createElementObjectWithContent(ElementPojo content) {
         Long seqId = elementRepository.getNextValueForElement();
         ElementObject elementObject = content.getElementObject();

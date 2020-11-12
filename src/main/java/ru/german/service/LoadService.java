@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoadService {
-    //todo
-    public void download() {
-
-    }
+    //todo some backup db or download all content(why?)
+    public void download() {}
 }

@@ -1,6 +1,5 @@
 package ru.german.service;
 
-import ru.generated.com.cloud.tables.pojos.ElementObject;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
+import ru.generated.com.cloud.tables.records.ElementObjectRecord;
 import ru.german.model.ElementPojo;
 import ru.german.repository.ElementRepository;
 
@@ -33,6 +34,7 @@ public class ShareService {
         ElementObject result = elementRepository.getActualElementObjectByEntity(elementId);
 
         if (result != null) {
+            logger.info("Successfully getting actual element, from db");
             return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -51,6 +53,7 @@ public class ShareService {
         }
 
         if (result != null) {
+            logger.info("Successfully getting actual content by element, from bucket");
             return ResponseEntity.ok(result);
         } else {
             logger.error("Can not find content for element: {}", id);
@@ -59,20 +62,23 @@ public class ShareService {
     }
 
     public ResponseEntity<ElementObject> updateActualElement(ElementObject content, Long entityId) {
-        ElementObject currentElement = elementRepository.getActualElementObjectByEntity(entityId);
+        ElementObjectRecord currentElement = elementRepository.getActualElementObjectRecordByEntity(entityId);
         fillNewFieldsToElement(content, currentElement);
 
-        return ResponseEntity.ok(currentElement);
+        elementRepository.updateElement(currentElement);
+
+        logger.info("Successfully updated actual element");
+        return ResponseEntity.ok(currentElement.into(ElementObject.class));
     }
 
-    private void fillNewFieldsToElement(ElementObject content, ElementObject currentElement) {
+    private void fillNewFieldsToElement(ElementObject content, ElementObjectRecord currentElement) {
         if (content.getStatus() != null) {
             currentElement.setStatus(content.getStatus());
         }
         if (content.getBusinessField() != null) {
             currentElement.setBusinessField(content.getBusinessField());
         }
-        //fixme version-db fields can't be change
+        //fixme version-db fields can't be changed
 //        if (content.getIsActual() != null) {
 //            currentElement.setIsActual(content.getIsActual());
 //        }
@@ -88,11 +94,15 @@ public class ShareService {
     public ResponseEntity<String> updateActualContentByElementEntity(String content, Long entityId) {
         Long id = elementRepository.getActualIdByEntity(entityId);
         elementRepository.uploadFile( defaultAmazonPath + id + ".txt", content);
+
+        logger.info("Successfully updated actual content by element");
         return ResponseEntity.ok(content);
     }
 
     public ResponseEntity<ElementObject> createElementObject(ElementObject content) {
-        elementRepository.insert(content);
+        elementRepository.insertElement(generateElement(content));
+
+        logger.info("Successfully created element, to db");
         return ResponseEntity.ok(content);
     }
 
@@ -101,9 +111,11 @@ public class ShareService {
         ElementObject elementObject = content.getElementObject();
         elementObject.setId(seqId);
         elementObject.setEntityId(seqId);
-        elementRepository.insert(content.getElementObject());
+        elementRepository.insertElement(generateElement(content.getElementObject()));
 
         elementRepository.uploadFile(defaultAmazonPath + seqId + ".txt", content.getContent());
+
+        logger.info("Successfully created element with content, in db/bucket");
         return ResponseEntity.ok(content);
     }
 
@@ -115,7 +127,7 @@ public class ShareService {
             try {
                 ElementPojo elementPojo = new ElementPojo();
 
-                InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + element.getId() + ".txt");
+                InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + element.getEntityId() + ".txt");
                 String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
                 elementPojo.setContent(content);
                 elementPojo.setElementObject(element);
@@ -130,6 +142,7 @@ public class ShareService {
         if (result.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
+            logger.info("Successfully getting tree of element, from db");
             return ResponseEntity.ok(result);
         }
     }
@@ -138,10 +151,31 @@ public class ShareService {
         InputStream inputStream = elementRepository.downloadFile(defaultAmazonPath + entityId + ".txt");
         String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
         if (content != null) {
+            logger.info("Successfully tested");
             return ResponseEntity.ok(content);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
+    }
+
+    private ElementObjectRecord generateElement(ElementObject content) {
+        ElementObjectRecord result = new ElementObjectRecord();
+
+        result.setEntityId(content.getEntityId());
+        result.setIsActual(content.getIsActual());
+        result.setStatus(content.getStatus());
+        result.setLastUpdateDateTime(content.getLastUpdateDateTime());
+        result.setBusinessField(content.getBusinessField());
+
+        return result;
+    }
+
+    public List<ElementObject> getAllElements() {
+        return elementRepository.getAll();
+    }
+
+    public ElementObject getById(Long id) {
+        return elementRepository.getById(id);
     }
 }

@@ -23,7 +23,8 @@ public class TestService {
     @Autowired
     private ShareService shareService;
 
-    String defaultPath = "com.german.";
+    @Value("${amazonPath}")
+    String defaultAmazonPath;
 
     @Before
     public void setUp() {
@@ -35,16 +36,19 @@ public class TestService {
         ElementObject elementObject4 = new ElementObject(10L, 1L, true, "NEW", new Timestamp(new Date().getTime()), "someStuff");
         ElementObject elementObject5 = new ElementObject();
         ElementObject elementObject6 = new ElementObject();
-        List<ElementObject> list = new ArrayList<>(Arrays.asList(elementObject1, elementObject2, elementObject3, elementObject4, elementObject5, elementObject6));
+        List<ElementObject> elelementList = new ArrayList<>(Arrays.asList(elementObject1, elementObject2, elementObject3, elementObject4, elementObject5, elementObject6));
 
 
-        ContentObject contentObject = new ContentObject(-150L, "testContent");
-        ContentObject contentObject1 = new ContentObject();
-        ContentObject contentObject2 = new ContentObject();
-        ContentObject contentObject3 = new ContentObject();
+        ContentObject contentObject1 = new ContentObject(-150L, "testContent", defaultAmazonPath, ".txt");
+        ContentObject contentObject2 = new ContentObject(1L, null, defaultAmazonPath, ".txt");
+        ContentObject contentObject3 = new ContentObject(1L, "testContent", defaultAmazonPath + "some", ".txt");
+        ContentObject contentObject4 = new ContentObject(1L, "testContent", defaultAmazonPath, ".png");
+        ContentObject contentObject5 = new ContentObject(1L, "testContent", defaultAmazonPath, ".txt");
+        List<ContentObject> contentList = new ArrayList<>(Arrays.asList(contentObject1, contentObject2, contentObject3, contentObject4, contentObject5));
 
 
-        creatingNewUsers(list);
+        creatingNewUsers(elelementList);
+        updatingContent(contentList);
     }
 
     public void creatingNewUsers(List<ElementObject> list) {
@@ -79,8 +83,12 @@ public class TestService {
         }
     }
 
-    public void updatingContent(String content) {
-
+    public void updatingContent(List<ContentObject> list) {
+        for (ContentObject elementObject : list) {
+            //Assert.assertThat(elementObject.getId());
+            //shareService.updateActualContentByElementEntity(elementObject);
+            //Assert.assertThat();
+        }
     }
 
     public void insertingContent(String content) {

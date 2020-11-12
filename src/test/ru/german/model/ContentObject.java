@@ -11,5 +11,5 @@ public class ContentObject {
     Long elementId;
     String content;
     String defaultPath;
-    String prefix;
+    String postfix;
 }

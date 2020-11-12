@@ -1,10 +1,10 @@
 package ru.german.controller;
 
-import ru.generated.com.cloud.tables.pojos.ElementObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 import ru.german.model.ElementPojo;
 import ru.german.service.ShareService;
 
@@ -25,6 +25,18 @@ public class MainController {
         return service.getActualElement(entityId);
     }
 
+    //region
+    //todo made when try write worked frontend
+    @RequestMapping(value = "/get/{id}", method = GET)
+    public ElementObject getElementObject(@PathVariable Long id) {
+        return service.getById(id);
+    }
+    @RequestMapping(value = "/getAll", method = GET)
+    public List<ElementObject> getActualElementObject() {
+        return service.getAllElements();
+    }
+    //endregion
+
     @RequestMapping(value = "/get/actual/content/{entityId}", method = GET)
     public ResponseEntity<String> getActualContentByElementEntity(@PathVariable Long entityId) {
         return service.getActualContent(entityId);
@@ -36,13 +48,13 @@ public class MainController {
     }
 
     @Transactional
-    @RequestMapping(value = "/create/actual/{entityId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/create/", method = RequestMethod.PUT)
     public ResponseEntity<ElementObject> createElementObject(@RequestBody ElementObject content) {
         return service.createElementObject(content);
     }
 
     @Transactional
-    @RequestMapping(value = "/create/actual/content/{entityId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/create/actual/withContent/", method = RequestMethod.PUT)
     public ResponseEntity<ElementPojo> createElementObjectWithContent(@RequestBody ElementPojo content) {
         return service.createElementObjectWithContent(content);
     }

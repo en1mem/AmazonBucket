@@ -1,8 +1,8 @@
 package ru.german.model;
 
-import ru.generated.com.cloud.tables.pojos.ElementObject;
 import lombok.Getter;
 import lombok.Setter;
+import ru.generated.com.cloud.tables.pojos.ElementObject;
 
 @Getter
 @Setter

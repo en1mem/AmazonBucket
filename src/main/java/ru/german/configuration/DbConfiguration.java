@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 public class DbConfiguration {
 
     @Value("${dbHost}")
@@ -32,6 +34,7 @@ public class DbConfiguration {
     @Value("${dbPortNumber}")
     private String portNumber;
 
+    @Bean
     public DataSourceConnectionProvider connectionProvider() {
         return new DataSourceConnectionProvider(new TransactionAwareDataSourceProxy(dataSource()));
     }
@@ -46,6 +49,7 @@ public class DbConfiguration {
     @Primary
     public HikariDataSource dataSource() {
         final HikariDataSource hikariDataSource = new HikariDataSource();
+        hikariDataSource.setPoolName("CloudTest");
         hikariDataSource.setMaximumPoolSize(15);
         hikariDataSource.setMinimumIdle(10);
         hikariDataSource.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");

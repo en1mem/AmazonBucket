@@ -47,19 +47,16 @@ public class MainController {
         return service.getElementTree(entityId);
     }
 
-    @Transactional
     @RequestMapping(value = "/create/", method = RequestMethod.PUT)
     public ResponseEntity<ElementObject> createElementObject(@RequestBody ElementObject content) {
         return service.createElementObject(content);
     }
 
-    @Transactional
     @RequestMapping(value = "/create/actual/withContent/", method = RequestMethod.PUT)
     public ResponseEntity<ElementPojo> createElementObjectWithContent(@RequestBody ElementPojo content) {
         return service.createElementObjectWithContent(content);
     }
 
-    @Transactional
     @RequestMapping(value = "/update/actual/{entityId}", method = RequestMethod.PUT)
     public ResponseEntity<ElementObject> updateActualElementByEntity(@RequestBody ElementObject content, @PathVariable Long entityId) {
         return service.updateActualElement(content, entityId);
